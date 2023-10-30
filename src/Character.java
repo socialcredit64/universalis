@@ -1,13 +1,16 @@
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
 public class Character {
 	
 	private ImageIcon img;
-	private float hp,armor,shield,apen,spen; //armor/shield penetration x%
+	private float hp,armor,shield;
+	private double apen,spen; //armor/shield penetration x%
 	private int x,y,w,h;
-	private Weapon unknown;
+	private String fac;
+	private ArrayList<Weapon> gunslot;
 	
 	
 
@@ -17,31 +20,55 @@ public class Character {
 		y=0;
 		w=150;
 		h=150;
-		unknown=new Weapon();
+		gunslot=new ArrayList<Weapon>();
 		hp=0;
 	}
 	
-	public Character(int xv, int yv, int hitpoints, int wv, int hv, ImageIcon i, Weapon gun) {
+	public Character(int xv, int yv, int hitpoints, ImageIcon i, ArrayList<Weapon> g) {
 		img = i;
 		x=xv;
 		y=yv;
-		w=wv;
-		h=hv;
-		unknown=gun;
+		w=i.getIconWidth();
+		h=i.getIconHeight();
+		gunslot=g;
 		hp=hitpoints;
 		
 	}
 	
 	public void drawShip(Graphics g2d) {
 		g2d.drawImage(img.getImage(), x, y, w, h, null);
-		System.out.println("this");
+		
 	}
+	public void drawLaser(Graphics g2d) {
+		for(int i=0; i<gunslot.size(); ++i) {
+			g2d.fillRect(gunslot.get(i).getX(), gunslot.get(i).getY(), gunslot.get(i).getW(), gunslot.get(i).getH());
+		}
+	
+	}
+	public void drawProjectile(Graphics g2d) {
+		for(int i=0; i<gunslot.size(); ++i) {
+			g2d.fillRect(gunslot.get(i).getX(), gunslot.get(i).getY(), 50, gunslot.get(i).getH());
+			gunslot.get(i).move();
+		}
+	}
+	
+	
+	
 	public ImageIcon getImg() {
 		return img;
 	}
 	
 	public String toString() {
 		return "default";
+	}
+	
+	public void addgun(Weapon w) {
+		
+		gunslot.add(w);
+	}
+	
+	public int getNSlots() {
+		return gunslot.size();
 	}
 	
 	public int getX() {
@@ -92,7 +119,7 @@ public class Character {
 		this.shield = shield;
 	}
 
-	public float getApen() {
+	public double getApen() {
 		return apen;
 	}
 
@@ -100,12 +127,28 @@ public class Character {
 		this.apen = apen;
 	}
 
-	public float getSpen() {
+	public double getSpen() {
 		return spen;
 	}
 
 	public void setSpen(float spen) {
 		this.spen = spen;
+	}
+
+	public ArrayList<Weapon> getGunslot() {
+		return gunslot;
+	}
+
+	public void setGunslot(ArrayList<Weapon> gunslot) {
+		this.gunslot = gunslot;
+	}
+
+	public String getFac() {
+		return fac;
+	}
+
+	public void setFac(String fac) {
+		this.fac = fac;
 	}
 	
 	

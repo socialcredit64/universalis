@@ -10,14 +10,21 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 	
 	private BufferedImage back; 
-	private int key, x, y, counter; 
+	private int key, x, y, counter, order; 
 	private Music sound;
-	private ArrayList<Character> startList;
+	private ArrayList<Faction> startSel;
 	private String display;
 	private int text;
+	private Background menu;
+	private Background scrollscreen;
+	private Character playership;
+
+	
+
 
 	//silly string
 	private String selectyourfaction;
+	private String Faction;
 
 	
 	public Game() {
@@ -26,8 +33,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		key =-1; 
-		startList = setStartChars();
-		System.out.println(startList.size());
+		order=0;
+		startSel = setStartFactions();
+		System.out.println(startSel.size());
 		sound=new Music();
 		display="start";
 		
@@ -35,20 +43,43 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		text=1;
 		counter=0;
 		sound.playmusic("startmenu.wav");
-	}
+		menu=new Background(0,0,new ImageIcon("spaceambience.jpg"));
+		scrollscreen=new Background(0,0,new ImageIcon("scrollgame.jpg"));
+		
+		playership=new Cruiser(100,300,new ArrayList<Weapon>());
+		
+	} 
 
 	
+	/*"Weapon Type: Energy\n"
+			  + "Faction Modifiers:\n"
+			  + "\t	Monthly Credits +15%\n"
+			  + "\t Ship armor and shield health +10%\n"
+			  + "\t ship repair cost +10%"
+			  
+			  "Weapon Type: Explosive\n"
+			  + "Faction Modifiers:\n"
+			  + "\t Ship attack speed +25%\n"
+			  + "\t Ship repair cost -15%\n"
+			  + "\t Ship health -10%"
+			  
+			  *"Weapon Type: Explosive\n"
+			  + "Faction Modifiers:\n"
+			  + ""*/
 	
-	private ArrayList<Character> setStartChars() {
+	private ArrayList<Faction> setStartFactions() {
 		// TODO Auto-generated method stub
-		ArrayList <Character> temp = new ArrayList<Character>();
-		temp.add(new Cruiser(150,200,new Weapon())); //constructor
-		temp.add(new Battleship(450,200,new Weapon()));
-		temp.add(new Titan(650,200,new Weapon()));
-		temp.add(new Scout(850,200,new Weapon()));
+		ArrayList <Faction> temp = new ArrayList<Faction>();
+		temp.add(new Faction(300,300,new ImageIcon("UNE.jpg"),new ArrayList<String>()));
+		
+		temp.add(new Faction(300,300,new ImageIcon("Swarm.jpg"),new ArrayList<String>()));
+		
+		temp.add(new Faction(300,300,new ImageIcon("Eliminators.jpg"),new ArrayList<String>()));
+		
+		temp.add(new Faction(300,300,new ImageIcon("Commonality.jpg"),new ArrayList<String>()));
+		
 		return temp;
 	}
-
 
 
 	public void run()
@@ -85,12 +116,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		g2d.drawString("Hello!" , x, y);
 		
-		for (Character sL: startList) {
-			sL.drawShip(g2d);
-			
-			System.out.println(sL);
-			}
 		drawScreens(g2d);
+		
+		
 		twoDgraph.drawImage(back, null, 0, 0);
 		++counter;
 	}
@@ -99,13 +127,28 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		switch(display){
 		case "start":
 			drawStartScreen(g2d);
-			System.out.println("start screen");
+			break;
+			
+			
+		case "combat":
+			drawCombatScreen(g2d);
+			break;
 		}
+		
+		
 	}
 
 
 	public void drawStartScreen(Graphics g2d) {
+		menu.drawBackground(g2d);
 		
+		
+			startSel.get(order).drawFaction(g2d);
+			
+			
+			
+		
+		g2d.setColor(Color.WHITE);
 		g2d.setFont( new Font("Century Gothic", Font.BOLD, 50));
 		g2d.drawString(selectyourfaction.substring(0,text), 500, 100);
 		
@@ -114,6 +157,45 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				++text;
 			}
 		}
+	}
+	public void drawCombatScreen(Graphics g2d) {
+		scrollscreen.drawBackground(g2d);
+		scrollscreen.scroll();
+		playership.drawShip(g2d);
+		
+		
+		if(playership.getFac()=="UNE") {
+			g2d.setColor(Color.blue);
+			if (counter%25==0) {
+				playership.drawLaser(g2d);
+			}
+		}
+		if(playership.getFac()=="Eliminator") {
+			g2d.setColor(Color.white);
+			if (counter%150==0) {
+				playership.drawLaser(g2d);
+			}
+		
+		
+		}
+		if(playership.getFac()=="Swarm") {
+			counter=0;
+			g2d.setColor(Color.DARK_GRAY);
+			if (counter>110&&counter<190) {
+				playership.drawProjectile(g2d);
+				counter=0;
+			}
+		}
+		if(playership.getFac()=="Blorg") {
+			counter=0;
+			g2d.setColor(Color.yellow);
+			if (counter>80&&counter<170) {
+				playership.drawProjectile(g2d);
+				counter=0;
+			}
+		}
+		
+		
 	}
 
 	//DO NOT DELETE
@@ -134,7 +216,17 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		key= e.getKeyCode();
 		System.out.println(key);
 		
-		
+		if(display=="start") {
+
+				if(key==39) {
+					order+=1;
+				}
+				if(key==37) {
+					order-=1;
+				}
+			
+			
+		}
 		
 	
 	}
@@ -164,6 +256,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		// TODO Auto-generated method stub
 		x=arg0.getX();
 		y=arg0.getY();
+		
+		
 	}
 
 
@@ -196,12 +290,38 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
-		System.out.println("you clicked at"+ arg0.getY());
+		System.out.println("you clicked at ("+ arg0.getX()+", "+arg0.getY()+")");
 		x=arg0.getX();
 		y=arg0.getY();
 		
+		if(x>=300&&x<=1300&&y>=300&&y<=900&&display.equals("start")) {
+			if(order==0) {
+				playership.setFac("UNE");
+				display="combat";
+				System.out.println("une");
+			}
+			if(order==1) {
+				playership.setFac("Swarm");
+				display="combat";
+			}
+			if(order==2) {
+				playership.setFac("Eliminator");
+				display="combat";
+				System.out.println("eliminator");
+			}
+			if(order==3) {
+				playership.setFac("Blorg");
+				display="combat";
+			}
+			
+		}
+		
+		if(display=="combat") {
+			
+		}
 	}
-
+		
+	
 
 
 	@Override

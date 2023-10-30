@@ -1,15 +1,16 @@
 
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
 public class Faction {
 	
 	private ImageIcon img;
-	private float hp,armor,shield,apen,spen; //armor/shield penetration x%
+	private ArrayList<String> tooltip;
 	private int x,y,w,h;
-	private Weapon unknown;
+	
 	
 	
 
@@ -19,15 +20,16 @@ public class Faction {
 		y=0;
 		w=150;
 		h=150;
+		tooltip=new ArrayList<String>();
 	}
 	
-	public Faction(int xv, int yv, ImageIcon i) {
+	public Faction(int xv, int yv, ImageIcon i, ArrayList<String> text) {
 		img = i;
 		x=xv;
 		y=yv;
-		w=0;
-		h=0;
-
+		w=i.getIconWidth();
+		h=i.getIconHeight();
+		tooltip=text;
 	}
 	
 	public void drawFaction(Graphics g2d) {
@@ -70,7 +72,9 @@ public class Faction {
 		this.h = h;
 	}
 
-	
+	public void setTip(String s) { //super.setTip("dgjdijdojf);
+		tooltip.add(s);
+	}
 	
 	
 }
