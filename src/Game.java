@@ -47,6 +47,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		scrollscreen=new Background(0,0,new ImageIcon("scrollgame.jpg"));
 		
 		playership=new Cruiser(100,300,new ArrayList<Weapon>());
+		playership.defaultEquip();
 		
 	} 
 
@@ -121,6 +122,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		twoDgraph.drawImage(back, null, 0, 0);
 		++counter;
+		//System.out.println(counter);
 	}
 
 	public void drawScreens(Graphics g2d) {
@@ -166,32 +168,32 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		if(playership.getFac()=="UNE") {
 			g2d.setColor(Color.blue);
-			if (counter%25==0) {
+			if (counter%40==0) {
 				playership.drawLaser(g2d);
+				//System.out.println("pew");
 			}
 		}
 		if(playership.getFac()=="Eliminator") {
 			g2d.setColor(Color.white);
-			if (counter%150==0) {
+			if (counter%100==0) {
 				playership.drawLaser(g2d);
 			}
 		
 		
 		}
 		if(playership.getFac()=="Swarm") {
-			counter=0;
 			g2d.setColor(Color.DARK_GRAY);
-			if (counter>110&&counter<190) {
+			if (counter%100==0) {
 				playership.drawProjectile(g2d);
-				counter=0;
+				
 			}
 		}
 		if(playership.getFac()=="Blorg") {
-			counter=0;
+			
 			g2d.setColor(Color.yellow);
-			if (counter>80&&counter<170) {
+			if (counter%100==0) {
 				playership.drawProjectile(g2d);
-				counter=0;
+				
 			}
 		}
 		

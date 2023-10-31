@@ -33,15 +33,20 @@ public class Character {
 		gunslot=g;
 		hp=hitpoints;
 		
+		
 	}
 	
 	public void drawShip(Graphics g2d) {
 		g2d.drawImage(img.getImage(), x, y, w, h, null);
 		
 	}
+	
+	
 	public void drawLaser(Graphics g2d) {
+		System.out.println(gunslot.size());
 		for(int i=0; i<gunslot.size(); ++i) {
 			g2d.fillRect(gunslot.get(i).getX(), gunslot.get(i).getY(), gunslot.get(i).getW(), gunslot.get(i).getH());
+			System.out.println("drawn");
 		}
 	
 	}
@@ -50,6 +55,24 @@ public class Character {
 			g2d.fillRect(gunslot.get(i).getX(), gunslot.get(i).getY(), 50, gunslot.get(i).getH());
 			gunslot.get(i).move();
 		}
+	}
+	
+	public void defaultEquip() {
+		while(this.getNSlots()<=3) {
+			if(this.getFac()=="UNE") {
+				gunslot.add(new Laser(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
+			}
+			if(this.getFac()=="Eliminator") {
+				gunslot.add(new Railgun(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
+			}
+			if(this.getFac()=="Blorg") {
+				gunslot.add(new Missile(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
+			}
+			if(this.getFac()=="Swarm") {
+				gunslot.add(new Strikecraft(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
+			}
+		}
+		
 	}
 	
 	
@@ -62,10 +85,6 @@ public class Character {
 		return "default";
 	}
 	
-	public void addgun(Weapon w) {
-		
-		gunslot.add(w);
-	}
 	
 	public int getNSlots() {
 		return gunslot.size();

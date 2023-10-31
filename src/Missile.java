@@ -5,7 +5,7 @@ public class Missile extends Ranged{
 		super();
 	}
 	public Missile(int x, int y) {
-		super(100, 15, 0, 0, x, y, 600, 8, new ImageIcon("PLACEHOLDER"));
+		super(100, 15, 20, 0, x, y, 600, 8, new ImageIcon("PLACEHOLDER"));
 	}
 	
 }
