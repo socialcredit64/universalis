@@ -40,31 +40,46 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		System.out.println(startSel.size());
 		sound=new Music();
 		display="start";
-		enemies = setEnemies();
 		
 		selectyourfaction="Select your faction";
 		text=1;
 		counter=0;
-		//sound.playmusic("startmenu.wav");
+		sound.playmusic("startmenu.wav");
 		menu=new Background(0,0,new ImageIcon("spaceambience.jpg"));
 		scrollscreen=new Background(0,0,new ImageIcon("scrollgame.jpg"));
 		
 		playership=new Cruiser(100,300,new ArrayList<Weapon>());
 		playership.defaultEquip();
-		//playership.defaultEquip();
 		
+		enemies = setEnemies();
 	} 
 
+	public void run()
+	   {
+	   	try
+	   	{
+	   		while(true)
+	   		{
+	   		   Thread.currentThread().sleep(5);
+	            repaint();
+	         }
+	      }
+	   		catch(Exception e)
+	      {
+	      }
+	  	}
+
+	
 	private Queue<Character> setEnemies(){
 		Queue<Character> temp = new LinkedList<>();
-
-		temp.add(new Pirate(1260,300,1000,new ArrayList<Weapon>()));
-		temp.add(new Cultist(1260,300,1000,new ArrayList<Weapon>()));
-		temp.add(new Cultist(1260,300,1000,new ArrayList<Weapon>()));
+		
+		temp.add(new Pirate());
+		temp.add(new Rebels());
+		temp.add(new Cultist());
 		return temp;
 	}
-
-
+	
+	
 	/*"Weapon Type: Energy\n"
 			  + "Faction Modifiers:\n"
 			  + "\t	Monthly Credits +15%\n"
@@ -96,22 +111,6 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	}
 
 
-	public void run()
-	   {
-	   	try
-	   	{
-	   		while(true)
-	   		{
-	   		   Thread.currentThread().sleep(5);
-	            repaint();
-	         }
-	      }
-	   		catch(Exception e)
-	      {
-	      }
-	  	}
-	
-
 	
 	
 	
@@ -124,9 +123,12 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 		Graphics g2d = back.createGraphics();
 	
+		
+		
+		
 		g2d.clearRect(0,0,getSize().width, getSize().height);
 	
-		g2d.setFont(new Font("Century Gothic", Font.BOLD, 50));
+		g2d.setFont( new Font("Century Gothic", Font.BOLD, 50));
 		
 		g2d.drawString("Hello!" , x, y);
 		
@@ -147,7 +149,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			
 		case "combat":
 			drawCombatScreen(g2d);
+			//enemies draw
 			break;
+			
 		}
 		
 		
@@ -177,33 +181,28 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		scrollscreen.drawBackground(g2d);
 		scrollscreen.scroll();
 		playership.drawShip(g2d);
-		enemies.element().drawShip(g2d);
+		
 		
 		if(playership.getFac()=="UNE") {
-			//System.out.println("vvvvvvv");
 			g2d.setColor(Color.blue);
 			if (counter%40==0) {
-				System.out.println("eeeee");
-				g2d.fillRect(677,513,500,7);
-				//System.out.println("bruuuuuuuuuuuuuuuuuh");
+				//playership.drawLaser(g2d);
+				//System.out.println("pew");
 			}
 		}
 		if(playership.getFac()=="Eliminator") {
 			g2d.setColor(Color.white);
-			if (counter%50==0) {
+			if (counter%100==0) {
 				//playership.drawLaser(g2d);
-				g2d.fillRect(677,513,500,7);
-
-				}
 			}
+		
+		
+		}
 		if(playership.getFac()=="Swarm") {
 			g2d.setColor(Color.DARK_GRAY);
 			if (counter%100==0) {
 				//playership.drawProjectile(g2d);
-				g2d.fillRect(677,513,10,7);
-				for(int i=0; i<2; ++i){
-					playership.getGunslot().get(i).move();
-				}
+				
 			}
 		}
 		if(playership.getFac()=="Blorg") {
@@ -211,10 +210,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			g2d.setColor(Color.yellow);
 			if (counter%100==0) {
 				//playership.drawProjectile(g2d);
-				g2d.fillRect(677,513,10,7);
-				for(int i=0; i<2; ++i){
-					playership.getGunslot().get(i).move();
-				}
+				
 			}
 		}
 		
@@ -250,11 +246,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			
 			
 		}
-		if(display=="combat"){
-			if(key==76){
-				enemies.remove();
-			}
-		}
+		
 		
 	
 	}
@@ -344,7 +336,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			
 		}
 		
-		
+		if(display=="combat") {
+			
+		}
 	}
 		
 	

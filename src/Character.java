@@ -36,6 +36,26 @@ public class Character {
 		
 	}
 	
+	public void defaultEquip() {
+		if(gunslot.size()<=3) {
+			if(fac=="UNE") {
+				addgun(new Laser(x+w+30,y+h/2));
+			}
+			if(this.getFac()=="Eliminator") {
+				addgun(new Railgun(x+w+30,y+h/2));
+			}
+			if(this.getFac()=="Blorg") {
+				addgun(new Missile(x+w+30,y+h/2));
+			}
+			if(this.getFac()=="Swarm") {
+				addgun(new Strikecraft(x+w+30,y+h/2));
+			}
+		}
+
+	}
+
+
+
 	public void drawShip(Graphics g2d) {
 		g2d.drawImage(img.getImage(), x, y, w, h, null);
 		
@@ -78,6 +98,10 @@ public class Character {
 		return gunslot.size();
 	}
 	
+	public ArrayList<Weapon> getWeaponsList(){
+		return gunslot;
+	}
+
 	public int getX() {
 		return x;
 	}
