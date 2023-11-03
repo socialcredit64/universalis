@@ -42,12 +42,12 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		selectyourfaction="Select your faction";
 		text=1;
 		counter=0;
-		sound.playmusic("startmenu.wav");
+		//sound.playmusic("startmenu.wav");
 		menu=new Background(0,0,new ImageIcon("spaceambience.jpg"));
 		scrollscreen=new Background(0,0,new ImageIcon("scrollgame.jpg"));
 		
 		playership=new Cruiser(100,300,new ArrayList<Weapon>());
-		playership.defaultEquip();
+		//playership.defaultEquip();
 		
 	} 
 
