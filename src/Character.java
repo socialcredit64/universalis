@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -6,12 +7,15 @@ import javax.swing.ImageIcon;
 public class Character {
 	
 	private ImageIcon img;
-	private float hp,armor,shield;
+	private float hp,armor;
 	private double apen,spen; //armor/shield penetration x%
 	private int x,y,w,h;
+	private float baseHP, maxHP; 
+	//base HP is upgraded via core upgrades while max hp is base+armor
 	private String fac;
 	private ArrayList<Weapon> gunslot;
 	
+	int hplocationX, hplocationY;
 	
 
 	public Character() {
@@ -22,6 +26,11 @@ public class Character {
 		h=150;
 		gunslot=new ArrayList<Weapon>();
 		hp=0;
+		baseHP=0;
+		armor=0;
+		hplocationX=70;
+		hplocationY=70;
+
 	}
 	
 	public Character(int xv, int yv, int hitpoints, ImageIcon i, ArrayList<Weapon> g) {
@@ -31,22 +40,50 @@ public class Character {
 		w=i.getIconWidth();
 		h=i.getIconHeight();
 		gunslot=g;
-		hp=hitpoints;
-		
-		
+		baseHP=hitpoints;
+		armor=0;
+		hplocationX=70;
+		hplocationY=70;
 	}
 	
+	public void defaultEquip() {
+		if(gunslot.size()<=3) {
+			if(fac=="UNE") {
+				addgun(new Laser(x+w+30,y+h/2));
+			}
+			if(this.getFac()=="Eliminator") {
+				addgun(new Railgun(x+w+30,y+h/2));
+			}
+			if(this.getFac()=="Blorg") {
+				addgun(new Missile(x+w+30,y+h/2));
+			}
+			if(this.getFac()=="Swarm") {
+				addgun(new Strikecraft(x+w+30,y+h/2));
+			}
+		}
+
+	}
+
+
+
 	public void drawShip(Graphics g2d) {
+		int gradient = 200;
 		g2d.drawImage(img.getImage(), x, y, w, h, null);
+		g2d.setColor(new Color(255,gradient,gradient));
+		g2d.drawRect(70,70,750,50);
+		//g2d.drawRect();
+		//g2d.fillRect(70,70,Math.round((hp/maxHP)*750),50);
+		
+		System.out.println((hp/maxHP)*750);
 		
 	}
 	
 	
 	public void drawLaser(Graphics g2d) {
-		System.out.println(gunslot.size());
+		//System.out.println(gunslot.size());
 		for(int i=0; i<gunslot.size(); ++i) {
 			g2d.fillRect(gunslot.get(i).getX(), gunslot.get(i).getY(), gunslot.get(i).getW(), gunslot.get(i).getH());
-			System.out.println("drawn");
+			//System.out.println("drawn");
 		}
 	
 	}
@@ -57,22 +94,10 @@ public class Character {
 		}
 	}
 	
-	public void defaultEquip() {
-		while(this.getNSlots()<=3) {
-			if(this.getFac()=="UNE") {
-				gunslot.add(new Laser(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
-			}
-			if(this.getFac()=="Eliminator") {
-				gunslot.add(new Railgun(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
-			}
-			if(this.getFac()=="Blorg") {
-				gunslot.add(new Missile(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
-			}
-			if(this.getFac()=="Swarm") {
-				gunslot.add(new Strikecraft(this.getX()+this.getW()+30,this.getY()+this.getH()/2));
-			}
-		}
-		
+
+	public void addgun(Weapon w) {
+
+		gunslot.add(w);
 	}
 	
 	
@@ -90,6 +115,10 @@ public class Character {
 		return gunslot.size();
 	}
 	
+	public ArrayList<Weapon> getWeaponsList(){
+		return gunslot;
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -130,14 +159,6 @@ public class Character {
 		this.armor = armor;
 	}
 
-	public float getShield() {
-		return shield;
-	}
-
-	public void setShield(float shield) {
-		this.shield = shield;
-	}
-
 	public double getApen() {
 		return apen;
 	}
@@ -170,5 +191,34 @@ public class Character {
 		this.fac = fac;
 	}
 	
-	
+	public float getbaseHP(){
+		return baseHP;
+	}
+
+	public void setbaseHP(float x){
+		baseHP=x;
+	}
+
+	public void setStartHP(){
+		hp=baseHP+armor;
+	}
+
+	public float gethp(){
+		return hp;
+	}
+
+	public void setMaxHP(){
+		maxHP=baseHP+armor;
+	}
+
+	public void setHPlocation(int x, int y){
+		x=hplocationX;
+		y=hplocationY;
+
+	}
+
+	public float getmaxHP(){
+		return maxHP;
+	}
+
 }
