@@ -2,7 +2,7 @@
 another game
 # no music files
 
-Economic System: This game is very unique. A big part of the game is resource management. The different types of resources in the game are as below:
+# Economic System: This game is very unique. A big part of the game is resource management. The different types of resources in the game are as below:
 
 Gold: The currency in this game. Use this to fund various industries throughout the planets and buy other resources.
 
