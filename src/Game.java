@@ -20,7 +20,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	private Background scrollscreen;
 	private Character playership;
 	private Queue<Character> enemies;
-
+	private int gradient;
+	private boolean ifOkToInit;
 	
 
 
@@ -34,6 +35,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+		
 		key =-1; 
 		order=0;
 		startSel = setStartFactions();
@@ -41,16 +43,21 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		sound=new Music();
 		display="start";
 		enemies = setEnemies();
-		
+		enemies.element().setMaxHP();
+		enemies.element().setStartHP();
+		gradient=200;
 		selectyourfaction="Select your faction";
 		text=1;
 		counter=0;
+
 		//sound.playmusic("startmenu.wav");
 		menu=new Background(0,0,new ImageIcon("spaceambience.jpg"));
 		scrollscreen=new Background(0,0,new ImageIcon("scrollgame.jpg"));
 		
 		playership=new Cruiser(100,300,new ArrayList<Weapon>());
 		playership.defaultEquip();
+		playership.setMaxHP();
+		playership.setStartHP();
 		//playership.defaultEquip();
 		
 	} 
@@ -61,6 +68,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		temp.add(new Pirate(1260,400,1000,new ArrayList<Weapon>()));
 		temp.add(new Cultist(1260,400,1000,new ArrayList<Weapon>()));
 		temp.add(new Rebels(1260,400,1000,new ArrayList<Weapon>()));
+		
 		return temp;
 	}
 
@@ -176,10 +184,15 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	public void drawCombatScreen(Graphics g2d) {
 		scrollscreen.drawBackground(g2d);
 		scrollscreen.scroll();
+		
 		playership.drawShip(g2d);
+		
+		
+
 		enemies.element().drawShip(g2d);
 		
-		
+
+
 		if(playership.getFac()=="UNE") {
 			//System.out.println("vvvvvvv");
 			g2d.setColor(Color.blue);
@@ -187,6 +200,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				System.out.println("eeeee");
 				g2d.fillRect(677,513,500,7);
 				//System.out.println("bruuuuuuuuuuuuuuuuuh");
+				enemies.element().hit(100);
 			}
 		}
 		if(playership.getFac()=="Eliminator") {
@@ -194,7 +208,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			if (counter%50==0) {
 				//playership.drawLaser(g2d);
 				g2d.fillRect(677,513,500,7);
-
+				enemies.element().hit(100);
+				
 				}
 			}
 		if(playership.getFac()=="Swarm") {
@@ -205,6 +220,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				for(int i=0; i<2; ++i){
 					playership.getGunslot().get(i).move();
 				}
+				enemies.element().hit(100);
 			}
 		}
 		if(playership.getFac()=="Blorg") {
@@ -216,11 +232,38 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				for(int i=0; i<2; ++i){
 					playership.getGunslot().get(i).move();
 				}
+				enemies.element().hit(100);
 			}
 		}
+
+		//enemies fight
+		if(counter%enemies.element().getAS()==0){
+			playership.hit(60);
+		}
+
+
+		//player hp bars
+		g2d.setColor(new Color(255,Math.round(gradient*(playership.gethp()/playership.getmaxHP())),Math.round(gradient*(playership.gethp()/playership.getmaxHP()))));
+		System.out.println(playership.gethp()+" "+playership.getmaxHP());
+		g2d.drawRect(70,70,500,50);
+		g2d.fillRect(70,70,Math.round((playership.gethp()/playership.getmaxHP())*500),50);
+		//enemy instance hp bars
+		g2d.setColor(new Color(255,Math.round(gradient*(enemies.element().gethp()/enemies.element().getmaxHP())),Math.round(gradient*(enemies.element().gethp()/enemies.element().getmaxHP()))));
+		System.out.println(enemies.element().gethp()+" "+enemies.element().getmaxHP());
+		g2d.drawRect(1030,70,500,50);
+		g2d.fillRect(1030,70,Math.round((enemies.element().gethp()/enemies.element().getmaxHP())*500),50);
 		
-		
-	}
+
+		//end
+		if(enemies.element().gethp()==0){
+			enemies.remove();
+			enemies.element().setMaxHP();
+			enemies.element().setStartHP();
+		}
+
+
+
+	}	
 
 	//DO NOT DELETE
 	@Override
@@ -254,6 +297,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		if(display=="combat"){
 			if(key==76){
 				enemies.remove();
+				enemies.element().setMaxHP();
+				enemies.element().setStartHP();
 			}
 		}
 		

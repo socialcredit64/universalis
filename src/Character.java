@@ -10,6 +10,7 @@ public class Character {
 	private float hp,armor;
 	private double apen,spen; //armor/shield penetration x%
 	private int x,y,w,h;
+	private int as;
 	private float baseHP, maxHP; 
 	//base HP is upgraded via core upgrades while max hp is base+armor
 	private String fac;
@@ -30,6 +31,7 @@ public class Character {
 		armor=0;
 		hplocationX=70;
 		hplocationY=70;
+		as=0;
 
 	}
 	
@@ -44,6 +46,7 @@ public class Character {
 		armor=0;
 		hplocationX=70;
 		hplocationY=70;
+		as=0;
 	}
 	
 	public void defaultEquip() {
@@ -69,12 +72,9 @@ public class Character {
 	public void drawShip(Graphics g2d) {
 		int gradient = 200;
 		g2d.drawImage(img.getImage(), x, y, w, h, null);
-		g2d.setColor(new Color(255,gradient,gradient));
-		g2d.drawRect(70,70,750,50);
+		
 		//g2d.drawRect();
 		//g2d.fillRect(70,70,Math.round((hp/maxHP)*750),50);
-		
-		System.out.println((hp/maxHP)*750);
 		
 	}
 	
@@ -117,6 +117,14 @@ public class Character {
 	
 	public ArrayList<Weapon> getWeaponsList(){
 		return gunslot;
+	}
+	
+	public int getAS() {
+		return as;
+	}
+
+	public void setAS(int as) {
+		this.as = as;
 	}
 
 	public int getX() {
@@ -199,9 +207,7 @@ public class Character {
 		baseHP=x;
 	}
 
-	public void setStartHP(){
-		hp=baseHP+armor;
-	}
+	
 
 	public float gethp(){
 		return hp;
@@ -211,9 +217,14 @@ public class Character {
 		maxHP=baseHP+armor;
 	}
 
+	public void setStartHP(){
+			hp=baseHP+armor;
+		}
+
+	//difference: hp is mutable.
 	public void setHPlocation(int x, int y){
-		x=hplocationX;
-		y=hplocationY;
+		hplocationX=x;
+		hplocationY=y;
 
 	}
 
@@ -221,4 +232,7 @@ public class Character {
 		return maxHP;
 	}
 
+	public void hit(int x){
+		hp-=x;
+	}
 }
