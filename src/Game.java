@@ -50,7 +50,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		text=1;
 		counter=0;
 
-		//sound.playmusic("startmenu.wav");
+		sound.playmusic("startmenu.wav");
 		menu=new Background(0,0,new ImageIcon("spaceambience.jpg"));
 		scrollscreen=new Background(0,0,new ImageIcon("scrollgame.jpg"));
 		
@@ -156,6 +156,10 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		case "combat":
 			drawCombatScreen(g2d);
 			break;
+
+
+		case "economy":
+			drawEconomyScreen(g2d);
 		}
 		
 		
@@ -181,6 +185,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			}
 		}
 	}
+
 	public void drawCombatScreen(Graphics g2d) {
 		scrollscreen.drawBackground(g2d);
 		scrollscreen.scroll();
@@ -199,7 +204,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			if (counter%40==0) {
 				System.out.println("eeeee");
 				g2d.fillRect(677,513,500,7);
-				//System.out.println("bruuuuuuuuuuuuuuuuuh");
+				
 				enemies.element().hit(100);
 			}
 		}
@@ -214,25 +219,35 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			}
 		if(playership.getFac()=="Swarm") {
 			g2d.setColor(Color.DARK_GRAY);
+			ArrayList<Projectile> swarmbullet = new ArrayList<>();
 			if (counter%100==0) {
-				//playership.drawProjectile(g2d);
-				g2d.fillRect(677,513,10,7);
-				for(int i=0; i<2; ++i){
-					playership.getGunslot().get(i).move();
+				swarmbullet.add(new Projectile());
+			}
+			for (Projectile p: swarmbullet){
+				g2d.fillRect(p.getX(),p.getY(),p.getW(),p.getH());
+				p.setDX(5);
+				p.move();
+				if (p.getX()>=1213){
+					swarmbullet.remove(p);
+					enemies.element().hit(100);
 				}
-				enemies.element().hit(100);
 			}
 		}
 		if(playership.getFac()=="Blorg") {
 			
 			g2d.setColor(Color.yellow);
+			ArrayList<Projectile> blorgbullet = new ArrayList<>();
 			if (counter%100==0) {
-				//playership.drawProjectile(g2d);
-				g2d.fillRect(677,513,10,7);
-				for(int i=0; i<2; ++i){
-					playership.getGunslot().get(i).move();
+				blorgbullet.add(new Projectile());
+			}
+			for (Projectile p: blorgbullet){
+				g2d.fillRect(p.getX(),p.getY(),p.getW(),p.getH());
+				p.setDX(5);
+				p.move();
+				if (p.getX()>=1213){
+					blorgbullet.remove(p);
+					enemies.element().hit(100);
 				}
-				enemies.element().hit(100);
 			}
 		}
 
@@ -241,15 +256,16 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			playership.hit(60);
 		}
 
+		
+	
+
 
 		//player hp bars
 		g2d.setColor(new Color(255,Math.round(gradient*(playership.gethp()/playership.getmaxHP())),Math.round(gradient*(playership.gethp()/playership.getmaxHP()))));
-		System.out.println(playership.gethp()+" "+playership.getmaxHP());
 		g2d.drawRect(70,70,500,50);
 		g2d.fillRect(70,70,Math.round((playership.gethp()/playership.getmaxHP())*500),50);
 		//enemy instance hp bars
 		g2d.setColor(new Color(255,Math.round(gradient*(enemies.element().gethp()/enemies.element().getmaxHP())),Math.round(gradient*(enemies.element().gethp()/enemies.element().getmaxHP()))));
-		System.out.println(enemies.element().gethp()+" "+enemies.element().getmaxHP());
 		g2d.drawRect(1030,70,500,50);
 		g2d.fillRect(1030,70,Math.round((enemies.element().gethp()/enemies.element().getmaxHP())*500),50);
 		
@@ -263,7 +279,11 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 
 
-	}	
+	}
+	
+	public void drawEconomyScreen(Graphics g2d){
+		g2d.drawImage(new ImageIcon("money.png").getImage(), 100,100,50,50, this);
+	}
 
 	//DO NOT DELETE
 	@Override

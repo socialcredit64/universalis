@@ -87,12 +87,7 @@ public class Character {
 		}
 	
 	}
-	public void drawProjectile(Graphics g2d) {
-		for(int i=0; i<gunslot.size(); ++i) {
-			g2d.fillRect(gunslot.get(i).getX(), gunslot.get(i).getY(), 50, gunslot.get(i).getH());
-			gunslot.get(i).move();
-		}
-	}
+
 	
 
 	public void addgun(Weapon w) {
