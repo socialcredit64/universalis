@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.awt.event.*; 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 public class Game  extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 
@@ -22,20 +23,20 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	private Queue<Character> enemies;
 	private int gradient;
 	private boolean ifOkToInit;
-	
 
 
 	//silly string
 	private String selectyourfaction;
 	private String Faction;
 
+	private ArrayList<Projectile> swarmbullet;
+	private ArrayList<Projectile> blorgbullet;
 	
 	public Game() {
 		new Thread(this).start();	
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		
 		key =-1; 
 		order=0;
 		startSel = setStartFactions();
@@ -49,6 +50,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		selectyourfaction="Select your faction";
 		text=1;
 		counter=0;
+
+		swarmbullet = new ArrayList<Projectile>();
+		blorgbullet = new ArrayList<Projectile>();
 
 		sound.playmusic("startmenu.wav");
 		menu=new Background(0,0,new ImageIcon("spaceambience.jpg"));
@@ -65,9 +69,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	private Queue<Character> setEnemies(){
 		Queue<Character> temp = new LinkedList<>();
 
-		temp.add(new Pirate(1260,400,1000,new ArrayList<Weapon>()));
-		temp.add(new Cultist(1260,400,1000,new ArrayList<Weapon>()));
-		temp.add(new Rebels(1260,400,1000,new ArrayList<Weapon>()));
+		temp.add(new Pirate(1260,400,1250,new ArrayList<Weapon>()));
+		temp.add(new Cultist(1260,400,1250,new ArrayList<Weapon>()));
+		temp.add(new Rebels(1260,400,1250,new ArrayList<Weapon>()));
 		
 		return temp;
 	}
@@ -219,7 +223,6 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			}
 		if(playership.getFac()=="Swarm") {
 			g2d.setColor(Color.DARK_GRAY);
-			ArrayList<Projectile> swarmbullet = new ArrayList<>();
 			if (counter%100==0) {
 				swarmbullet.add(new Projectile());
 			}
@@ -236,13 +239,13 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		if(playership.getFac()=="Blorg") {
 			
 			g2d.setColor(Color.yellow);
-			ArrayList<Projectile> blorgbullet = new ArrayList<>();
 			if (counter%100==0) {
 				blorgbullet.add(new Projectile());
+				System.out.println("here");
 			}
 			for (Projectile p: blorgbullet){
 				g2d.fillRect(p.getX(),p.getY(),p.getW(),p.getH());
-				p.setDX(5);
+				p.setDX(3);
 				p.move();
 				if (p.getX()>=1213){
 					blorgbullet.remove(p);
@@ -252,8 +255,10 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		}
 
 		//enemies fight
-		if(counter%enemies.element().getAS()==0){
-			playership.hit(60);
+		g2d.setColor(new Color(200,0,0));
+		if(counter%50==0){
+			g2d.fillRect(677,420,500,12); //the laser bullet
+			playership.hit(20);
 		}
 
 		
@@ -261,6 +266,13 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 
 		//player hp bars
+		
+		if(enemies.element().gethp()<=0){
+			enemies.remove();
+			enemies.element().setMaxHP();
+			enemies.element().setStartHP();
+		}
+
 		g2d.setColor(new Color(255,Math.round(gradient*(playership.gethp()/playership.getmaxHP())),Math.round(gradient*(playership.gethp()/playership.getmaxHP()))));
 		g2d.drawRect(70,70,500,50);
 		g2d.fillRect(70,70,Math.round((playership.gethp()/playership.getmaxHP())*500),50);
@@ -269,12 +281,10 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		g2d.drawRect(1030,70,500,50);
 		g2d.fillRect(1030,70,Math.round((enemies.element().gethp()/enemies.element().getmaxHP())*500),50);
 		
-
 		//end
-		if(enemies.element().gethp()==0){
-			enemies.remove();
-			enemies.element().setMaxHP();
-			enemies.element().setStartHP();
+		
+		if(enemies.isEmpty()){
+			
 		}
 
 

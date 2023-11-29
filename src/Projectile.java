@@ -4,8 +4,8 @@ public class Projectile {
     public Projectile(){
         x=417;
         y=513;
-        w=10;
-        h=7;
+        w=20;
+        h=12;
         dx=1;
     }
 
