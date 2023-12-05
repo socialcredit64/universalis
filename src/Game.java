@@ -2,15 +2,21 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.*; 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Game  extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 
-	
+	private File filename;
+
 	private BufferedImage back; 
 	private int key, x, y, counter, order; 
 	private Music sound;
@@ -31,6 +37,14 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 	private ArrayList<Projectile> swarmbullet;
 	private ArrayList<Projectile> blorgbullet;
+
+	private ImageIcon winscreen;
+	
+	private ImageIcon money;
+	private ImageIcon minerals;
+	private ImageIcon alloy;
+	private ImageIcon authority;
+	private ImageIcon science;
 	
 	public Game() {
 		new Thread(this).start();	
@@ -42,7 +56,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		startSel = setStartFactions();
 		System.out.println(startSel.size());
 		sound=new Music();
+		////////////////////////////////////////control starting position
 		display="start";
+		//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 		enemies = setEnemies();
 		enemies.element().setMaxHP();
 		enemies.element().setStartHP();
@@ -64,7 +80,55 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		playership.setStartHP();
 		//playership.defaultEquip();
 		
+		winscreen = new ImageIcon("winscreen.png");
+
+		money = new ImageIcon("money.png");
+		minerals = new ImageIcon("minerals.jpg");
+		alloy = new ImageIcon("alloy.jpg");
+		authority = new ImageIcon("authority.png");
+		science = new ImageIcon("science.jpg");
+
+		filename = new File("save.txt");
 	} 
+
+	public void createFile(){
+		try{
+			if(filename.createNewFile()){
+				System.out.println("file created"+ filename.getName());
+			}
+			else{
+				System.out.println("file already exists!");
+			}
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void readFile(){
+		try {
+			Scanner sc = new Scanner(filename);
+			while(sc.hasNext()){
+				System.out.println(sc.nextLine());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void writeToFile(){
+		try {
+			FileWriter myWriter = new FileWriter(filename);
+			myWriter.write("You have "+ enemies.size()+" enemies left");
+			System.out.println(enemies.size());
+			myWriter.close();
+			System.out.println("Written to file successfully");
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private Queue<Character> setEnemies(){
 		Queue<Character> temp = new LinkedList<>();
@@ -164,6 +228,14 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 		case "economy":
 			drawEconomyScreen(g2d);
+			break;
+		
+		case "win":
+			drawWinScreen(g2d);
+			break;
+		
+		case "lose":
+			drawLoseScreen(g2d);
 		}
 		
 		
@@ -269,8 +341,21 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		if(enemies.element().gethp()<=0){
 			enemies.remove();
-			enemies.element().setMaxHP();
-			enemies.element().setStartHP();
+			if(enemies.isEmpty()){
+				display="economy";
+			}
+
+			if(enemies.isEmpty()==false){
+				enemies.element().setMaxHP();
+				enemies.element().setStartHP();
+			}
+		}
+
+		if(enemies.isEmpty()){
+			display="economy";
+		}
+		if(playership.gethp()<=0){
+			display="lose";
 		}
 
 		g2d.setColor(new Color(255,Math.round(gradient*(playership.gethp()/playership.getmaxHP())),Math.round(gradient*(playership.gethp()/playership.getmaxHP()))));
@@ -283,17 +368,31 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		//end
 		
-		if(enemies.isEmpty()){
-			
-		}
+		
 
 
 
 	}
 	
-	public void drawEconomyScreen(Graphics g2d){
-		g2d.drawImage(new ImageIcon("money.png").getImage(), 100,100,50,50, this);
+	public void drawWinScreen(Graphics g2d){
+		g2d.drawImage(winscreen.getImage(),0,0,1800,1600, this);
+		g2d.setColor(Color.white);
+		g2d.drawString("Complete Victory",50,50);
 	}
+
+	public void drawLoseScreen(Graphics g2d){
+		g2d.drawImage(winscreen.getImage(),0,0,1800,1600, this);
+		g2d.setColor(Color.white);
+		g2d.drawString("Absolute Defeat",50,50);
+	}
+
+	public void drawEconomyScreen(Graphics g2d){
+		g2d.drawImage(money.getImage(),50,10,50,50, this);
+		//g2d.drawString(null, text, key);
+		
+	}
+
+
 
 	//DO NOT DELETE
 	@Override
@@ -315,10 +414,10 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		if(display=="start") {
 
-				if(key==39) {
+				if(key==39&&order<=4) {
 					order+=1;
 				}
-				if(key==37) {
+				if(key==37&&order>=0) {
 					order-=1;
 				}
 			
