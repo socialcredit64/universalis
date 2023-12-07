@@ -45,6 +45,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	private ImageIcon alloy;
 	private ImageIcon authority;
 	private ImageIcon science;
+
+	private Economy economy;
 	
 	public Game() {
 		new Thread(this).start();	
@@ -83,7 +85,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		winscreen = new ImageIcon("winscreen.png");
 
 		money = new ImageIcon("money.png");
-		minerals = new ImageIcon("minerals.jpg");
+		minerals = new ImageIcon("minerals.png");
 		alloy = new ImageIcon("alloy.jpg");
 		authority = new ImageIcon("authority.png");
 		science = new ImageIcon("science.jpg");
@@ -120,8 +122,17 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	public void writeToFile(){
 		try {
 			FileWriter myWriter = new FileWriter(filename);
-			myWriter.write("You have "+ enemies.size()+" enemies left");
+			myWriter.write("You have "+ enemies.size()+" enemies left\n");
 			System.out.println(enemies.size());
+			
+
+			myWriter.write(playership.getFac()+"\n");
+
+			myWriter.write(display+"\n");
+
+			
+			
+			
 			myWriter.close();
 			System.out.println("Written to file successfully");
 		
@@ -204,7 +215,6 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	
 		g2d.setFont(new Font("Century Gothic", Font.BOLD, 50));
 		
-		g2d.drawString("Hello!" , x, y);
 		
 		drawScreens(g2d);
 		
@@ -328,10 +338,30 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 		//enemies fight
 		g2d.setColor(new Color(200,0,0));
-		if(counter%50==0){
-			g2d.fillRect(677,420,500,12); //the laser bullet
-			playership.hit(20);
+		
+		//using InstanceOf to give different enemies different attack type and attack speeds
+		if(enemies.element() instanceof Pirate){
+			if(counter%50==0){
+				g2d.fillRect(677,420,500,12); //the laser bullet
+				playership.hit(20);
+			}
 		}
+		if(enemies.element() instanceof Rebels){
+			g2d.setColor(new Color(200,200,0));
+			if(counter%60==0){
+				g2d.fillRect(677,420,500,12); 
+				playership.hit(25);
+			}
+		}
+		if(enemies.element() instanceof Cultist){
+			if(counter%40==0){
+				g2d.fillRect(677,420,500,12); 
+				playership.hit(18);
+			}
+		}
+
+
+		
 
 		
 	
@@ -387,8 +417,17 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	}
 
 	public void drawEconomyScreen(Graphics g2d){
+		g2d.setColor(Color.black);
+		g2d.fillRect(0,0,1800,1600);
+
 		g2d.drawImage(money.getImage(),50,10,50,50, this);
-		//g2d.drawString(null, text, key);
+		g2d.drawImage(minerals.getImage(),50,60,50,50,this);
+		g2d.drawImage(alloy.getImage(),50,110,50,50,this);
+		g2d.drawImage(authority.getImage(),50,160,50,50,this);
+		g2d.drawImage(science.getImage(),50,210,50,50,this);
+		
+		
+		g2d.drawString("", text, key);
 		
 	}
 
@@ -516,7 +555,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				playership.setFac("Blorg");
 				display="combat";
 			}
-			
+			// economy constructor
+			economy = new Economy(playership.getFac());
 		}
 		
 		

@@ -24,8 +24,9 @@ public class Planet {
         dpopulation = 3;
     }
 
-    public Planet(String t, ){
-        name = ""
+    public Planet(String t){
+        name = "Colony";
+        type = t;
     }
 
     public void drawPlanet(Graphics g2d){

@@ -12,6 +12,8 @@ public class Economy {
 	private int dauthority;
 	private int dscience;
 
+	private String faction;
+
 	private int repaircost;
 	
 	public Economy() {
@@ -20,6 +22,25 @@ public class Economy {
 		alloy = 500;
 		authority = 100;
 		science = 0;
+		
+		faction = "";
+		
+		dmoney = 100;
+		dminerals = 100;
+		dalloy = 70;
+		dauthority = -10;
+		dscience = 50;
+
+	}
+
+	public Economy(String f) {
+		money=2000;
+		minerals=1500;
+		alloy = 500;
+		authority = 100;
+		science = 0;
+
+		faction = f;
 		
 		dmoney = 100;
 		dminerals = 100;
