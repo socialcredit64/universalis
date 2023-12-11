@@ -47,6 +47,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	private ImageIcon science;
 
 	private Economy economy;
+
+	private ArrayList planets;
 	
 	public Game() {
 		new Thread(this).start();	
@@ -89,6 +91,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		alloy = new ImageIcon("alloy.jpg");
 		authority = new ImageIcon("authority.png");
 		science = new ImageIcon("science.jpg");
+
+		planets = new ArrayList<Planet>();
 
 		filename = new File("save.txt");
 	} 
@@ -250,8 +254,23 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		
 	}
-
-
+	
+	/*"Weapon Type: Energy\n"
+			  + "Faction Modifiers:\n"
+			  + "\t	Monthly Credits +15%\n"
+			  + "\t Ship armor and shield health +10%\n"
+			  + "\t ship repair cost +10%"
+			  
+			  "Weapon Type: Explosive\n"
+			  + "Faction Modifiers:\n"
+			  + "\t Ship attack speed +25%\n"
+			  + "\t Ship repair cost -15%\n"
+			  + "\t Ship health -10%"
+			  
+			  *"Weapon Type: Explosive\n"
+			  + "Faction Modifiers:\n"
+			  + ""*/
+			  
 	public void drawStartScreen(Graphics g2d) {
 		menu.drawBackground(g2d);
 		
@@ -420,15 +439,28 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		g2d.setColor(Color.black);
 		g2d.fillRect(0,0,1800,1600);
 
-		g2d.drawImage(money.getImage(),50,10,50,50, this);
-		g2d.drawImage(minerals.getImage(),50,60,50,50,this);
-		g2d.drawImage(alloy.getImage(),50,110,50,50,this);
-		g2d.drawImage(authority.getImage(),50,160,50,50,this);
-		g2d.drawImage(science.getImage(),50,210,50,50,this);
+		g2d.drawImage(money.getImage(),20,10,50,50, this);
+		g2d.drawImage(minerals.getImage(),20,60,50,50,this);
+		g2d.drawImage(alloy.getImage(),20,110,50,50,this);
+		g2d.drawImage(authority.getImage(),20,160,50,50,this);
+		g2d.drawImage(science.getImage(),20,210,50,50,this);
+
+		g2d.setColor(Color.white);
+		g2d.setFont(new Font("Century Gothic", Font.BOLD, 40));
+
+		g2d.drawString(""+economy.getMoney(), 20+58, 40+10);
+		g2d.drawString(""+economy.getMinerals(), 20+58, 40+60);
+		g2d.drawString(""+economy.getAlloy(), 20+58, 40+110);
+		g2d.drawString(""+economy.getAuthority(), 20+58, 40+160);
+		g2d.drawString(""+economy.getScience(), 20+58, 40+210);
+
+		economy.drawResourceChange(g2d,economy.getDMoney(), 20+58+150, 40+10);
+		economy.drawResourceChange(g2d,economy.getDMinerals(), 20+58+150, 40+60);
+		economy.drawResourceChange(g2d,economy.getDAlloy(), 20+58+150, 40+110);
+		economy.drawResourceChange(g2d,economy.getDAuthority(), 20+58+150, 40+160);
+		economy.drawResourceChange(g2d,economy.getDScience(), 20+58+150, 40+210);
 		
-		
-		g2d.drawString("", text, key);
-		
+
 	}
 
 
@@ -539,24 +571,27 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		if(x>=300&&x<=1300&&y>=300&&y<=900&&display.equals("start")) {
 			if(order==0) {
 				playership.setFac("UNE");
-				display="combat";
+				
 				System.out.println("une");
 			}
 			if(order==1) {
 				playership.setFac("Swarm");
-				display="combat";
+				
 			}
 			if(order==2) {
 				playership.setFac("Eliminator");
-				display="combat";
+				
 				System.out.println("eliminator");
 			}
 			if(order==3) {
 				playership.setFac("Blorg");
-				display="combat";
+				
 			}
 			// economy constructor
+			display = "economy";
 			economy = new Economy(playership.getFac());
+			//planet load
+			planets.add(new Planet(playership.getFac(), "Homeworld"));
 		}
 		
 		

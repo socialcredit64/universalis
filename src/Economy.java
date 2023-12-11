@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class Economy {
 	private int money;
@@ -63,7 +65,47 @@ public class Economy {
 		alloy-=repaircost;
 	}
 
+	public int getMoney(){
+		return money;
+	}
+	public int getMinerals(){
+		return minerals;
+	}
+	public int getAlloy(){
+		return alloy;
+	}
+	public int getAuthority(){
+		return authority;
+	}
+	public int getScience(){
+		return science;
+	}
 
+	public int getDMoney(){
+		return dmoney;
+	}
+	public int getDMinerals(){
+		return dminerals;
+	}
+	public int getDAlloy(){
+		return dalloy;
+	}
+	public int getDAuthority(){
+		return dauthority;
+	}
+	public int getDScience(){
+		return dscience;
+	}
 
-	
+	public void drawResourceChange(Graphics g2d, int dresource, int x, int y){
+		if (dresource>0){
+			g2d.setColor(Color.green);
+		}
+		if (dresource<0){
+			g2d.setColor(Color.red);
+		}
+		g2d.drawString(""+dresource, x, y);
+
+		
+	}
 }

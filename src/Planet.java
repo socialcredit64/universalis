@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class Planet {
@@ -24,13 +25,28 @@ public class Planet {
         dpopulation = 3;
     }
 
-    public Planet(String t){
-        name = "Colony";
+    public Planet(String n, String t){
+        if(n=="UNE"){
+            name = "Earth";
+        }
+        if(n=="Eliminator"){
+            name = "XT-489.00";
+        }
+        if(n=="Blorg"){
+            name = "Blorg";
+        }
+        if(n=="Swarm"){
+            name = "Esclishtjwslkbfim";
+        }
+        
+        
         type = t;
     }
 
     public void drawPlanet(Graphics g2d){
-        
+        g2d.setFont(new Font("Century Gothic", Font.BOLD, 50));
+        g2d.drawString(name, 400, 10);
+
     }
 
     public void improveInfrastructure(){
