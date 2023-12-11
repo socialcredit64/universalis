@@ -456,11 +456,11 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		g2d.drawString(""+economy.getAuthority(), 20+58, 40+160);
 		g2d.drawString(""+economy.getScience(), 20+58, 40+210);
 
-		economy.drawResourceChange(g2d,economy.getDMoney(), 20+58+150, 40+10);
-		economy.drawResourceChange(g2d,economy.getDMinerals(), 20+58+150, 40+60);
-		economy.drawResourceChange(g2d,economy.getDAlloy(), 20+58+150, 40+110);
-		economy.drawResourceChange(g2d,economy.getDAuthority(), 20+58+150, 40+160);
-		economy.drawResourceChange(g2d,economy.getDScience(), 20+58+150, 40+210);
+		economy.drawResourceChange(g2d,economy.getDmoney(), 20+58+150, 40+10);
+		economy.drawResourceChange(g2d,economy.getDminerals(), 20+58+150, 40+60);
+		economy.drawResourceChange(g2d,economy.getDalloy(), 20+58+150, 40+110);
+		economy.drawResourceChange(g2d,economy.getDauthority(), 20+58+150, 40+160);
+		economy.drawResourceChange(g2d,economy.getDscience(), 20+58+150, 40+210);
 		
 		//draw planet (planet is an index)
 		planets.get(planet).drawPlanet(g2d);
@@ -597,6 +597,14 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			economy = new Economy(playership.getFac());
 			//planet load
 			planets.add(new Planet(playership.getFac(), "Homeworld"));
+		}
+
+		if(display.equals("economy")){
+			if(x<900+30&&x>900&&y<173+30&&y>173){
+				planets.get(planet).cancelImprove("energy",economy);
+			}
+			
+
 		}
 		
 		

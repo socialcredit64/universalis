@@ -7,10 +7,10 @@ import javax.swing.ImageIcon;
 public class Planet {
     private String name;
     private String type;
-    private int industries;
-    private int academies;
-    private int mining;
-    private int energy;
+    private District industries;
+    private District academies;
+    private District mining;
+    private District energy;
 
     private int population;
     private int dpopulation;
@@ -20,14 +20,16 @@ public class Planet {
 
 
     public Planet(){
-        //starting planet
+        
         name = "Home Planet";
         type = "Homeworld";
-        industries = 1;
-        academies = 1;
-        mining = 1;
-        energy = 1;
-        population = 0;
+
+        energy = new District();;
+        mining = new District();;
+        industries = new District();
+        academies = new District();;
+        population = 1;
+
         dpopulation = 3;
 
         up = new ImageIcon("uparrow.png");
@@ -51,12 +53,21 @@ public class Planet {
         
         type = t;
         if(t=="Homeworld"){
-            industries = 3;
-            academies = 3;
-            mining = 3;
-            energy = 3;
+            energy = new District(3,4000,0);
+            mining = new District(3,3000,0);
+            industries = new District(3,5000,0);
+            academies = new District(3,6000,1000);
+
             population = 10;
             dpopulation = 1;
+        }
+
+        if(t=="Colony"){
+            energy = new District(0,4000,0);
+            mining = new District(0,3000,0);
+            industries = new District(0,5000,0);
+            academies = new District(0,6000,1000);
+
         }
         
         up = new ImageIcon("uparrow.png");
@@ -80,21 +91,32 @@ public class Planet {
             g2d.drawImage(down.getImage(),900,173+40*i,30,30,null);
             g2d.drawImage(up.getImage(),1160,173+40*i,30,30,null);
         }
-        g2d.drawString(""+energy,1000,200);
-        g2d.drawString(""+mining,1000,240);
-        g2d.drawString(""+industries,1000,280);
-        g2d.drawString(""+academies,1000,320);
 
 
+        g2d.drawString(""+energy.getLevel(),1000,200);
+        g2d.drawString(""+mining.getLevel(),1000,240);
+        g2d.drawString(""+industries.getLevel(),1000,280);
+        g2d.drawString(""+academies.getLevel(),1000,320);
 
-        
        
-       
-        
     }
 
-    public void improveInfrastructure(int district){
-
+    public void improve(String district, Economy e){
+        if (district == "energy"){
+           
+        }
     }
 
+    public void cancelImprove(String district, Economy e){
+        if (district == "energy"){
+            if(energy.getTimesIncreased()>0){
+                
+            }
+        }
+    }
+
+    public void generateIncome(Economy e){
+        
+    }
+    
 }

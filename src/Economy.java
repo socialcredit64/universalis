@@ -65,38 +65,6 @@ public class Economy {
 		alloy-=repaircost;
 	}
 
-	public int getMoney(){
-		return money;
-	}
-	public int getMinerals(){
-		return minerals;
-	}
-	public int getAlloy(){
-		return alloy;
-	}
-	public int getAuthority(){
-		return authority;
-	}
-	public int getScience(){
-		return science;
-	}
-
-	public int getDMoney(){
-		return dmoney;
-	}
-	public int getDMinerals(){
-		return dminerals;
-	}
-	public int getDAlloy(){
-		return dalloy;
-	}
-	public int getDAuthority(){
-		return dauthority;
-	}
-	public int getDScience(){
-		return dscience;
-	}
-
 	public void drawResourceChange(Graphics g2d, int dresource, int x, int y){
 		if (dresource>0){
 			g2d.setColor(Color.green);
@@ -108,4 +76,104 @@ public class Economy {
 
 		
 	}
+
+	
+	public int getMoney() {
+		return this.money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	public int getMinerals() {
+		return this.minerals;
+	}
+
+	public void setMinerals(int minerals) {
+		this.minerals = minerals;
+	}
+
+	public int getAlloy() {
+		return this.alloy;
+	}
+
+	public void setAlloy(int alloy) {
+		this.alloy = alloy;
+	}
+
+	public int getAuthority() {
+		return this.authority;
+	}
+
+	public void setAuthority(int authority) {
+		this.authority = authority;
+	}
+
+	public int getScience() {
+		return this.science;
+	}
+
+	public void setScience(int science) {
+		this.science = science;
+	}
+
+	public int getDmoney() {
+		return this.dmoney;
+	}
+
+	public void setDmoney(int dmoney) {
+		this.dmoney = dmoney;
+	}
+
+	public int getDminerals() {
+		return this.dminerals;
+	}
+
+	public void setDminerals(int dminerals) {
+		this.dminerals = dminerals;
+	}
+
+	public int getDalloy() {
+		return this.dalloy;
+	}
+
+	public void setDalloy(int dalloy) {
+		this.dalloy = dalloy;
+	}
+
+	public int getDauthority() {
+		return this.dauthority;
+	}
+
+	public void setDauthority(int dauthority) {
+		this.dauthority = dauthority;
+	}
+
+	public int getDscience() {
+		return this.dscience;
+	}
+
+	public void setDscience(int dscience) {
+		this.dscience = dscience;
+	}
+
+	public String getFaction() {
+		return this.faction;
+	}
+
+	public void setFaction(String faction) {
+		this.faction = faction;
+	}
+
+	public int getRepaircost() {
+		return this.repaircost;
+	}
+
+	public void setRepaircost(int repaircost) {
+		this.repaircost = repaircost;
+	}
+	
+
+
 }
