@@ -48,7 +48,8 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 
 	private Economy economy;
 
-	private ArrayList planets;
+	private ArrayList<Planet> planets;
+	private int planet;
 	
 	public Game() {
 		new Thread(this).start();	
@@ -93,6 +94,7 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		science = new ImageIcon("science.jpg");
 
 		planets = new ArrayList<Planet>();
+		planet = 0;
 
 		filename = new File("save.txt");
 	} 
@@ -459,6 +461,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		economy.drawResourceChange(g2d,economy.getDAlloy(), 20+58+150, 40+110);
 		economy.drawResourceChange(g2d,economy.getDAuthority(), 20+58+150, 40+160);
 		economy.drawResourceChange(g2d,economy.getDScience(), 20+58+150, 40+210);
+		
+		//draw planet (planet is an index)
+		planets.get(planet).drawPlanet(g2d);
 		
 
 	}
