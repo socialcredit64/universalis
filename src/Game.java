@@ -276,14 +276,10 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 	public void drawStartScreen(Graphics g2d) {
 		menu.drawBackground(g2d);
 		
-		
-			startSel.get(order).drawFaction(g2d);
-			
-			
-			
-		
 		g2d.setColor(Color.WHITE);
 		g2d.setFont( new Font("Century Gothic", Font.BOLD, 50));
+		
+		startSel.get(order).drawFaction(g2d);
 		g2d.drawString(selectyourfaction.substring(0,text), 500, 100);
 		
 		if (text<selectyourfaction.length()) {
@@ -291,6 +287,16 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				++text;
 			}
 		}
+
+		g2d.setFont( new Font("Century Gothic", Font.BOLD, 20));
+		
+		g2d.drawString("Faction Modifiers", 1080, 60);
+		if(order==0){
+				g2d.setColor(Color.GREEN);
+				g2d.drawString("Monthly Cash +15%", 1080,80);
+
+		}
+
 	}
 
 	public void drawCombatScreen(Graphics g2d) {
