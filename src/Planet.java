@@ -53,20 +53,20 @@ public class Planet {
         
         type = t;
         if(t=="Homeworld"){
-            energy = new District(3,4000,0);
-            mining = new District(3,3000,0);
-            industries = new District(3,5000,0);
-            academies = new District(3,6000,1000);
+            energy = new District(3,400,0);
+            mining = new District(3,300,0);
+            industries = new District(3,500,0);
+            academies = new District(3,600,1000);
 
             population = 10;
             dpopulation = 1;
         }
 
         if(t=="Colony"){
-            energy = new District(0,4000,0);
-            mining = new District(0,3000,0);
-            industries = new District(0,5000,0);
-            academies = new District(0,6000,1000);
+            energy = new District(0,400,0);
+            mining = new District(0,300,0);
+            industries = new District(0,500,0);
+            academies = new District(0,600,1000);
 
         }
         
@@ -103,20 +103,53 @@ public class Planet {
 
     public void improve(String district, Economy e){
         if (district == "energy"){
-           
+           energy.increase();
         }
+        if (district == "mining"){
+            mining.increase();
+        }
+        if (district == "industries"){
+            industries.increase();
+        }
+        if (district == "academies"){
+            academies.increase();
+        }
+
     }
 
     public void cancelImprove(String district, Economy e){
         if (district == "energy"){
             if(energy.getTimesIncreased()>0){
-                
+                energy.decrease();
+            }
+        }
+        if (district == "mining"){
+            if(mining.getTimesIncreased()>0){
+                mining.decrease();
+            }
+        }
+        if (district == "industries"){
+            if(industries.getTimesIncreased()>0){
+                industries.decrease();
+            }
+        }
+        if (district == "academies"){
+            if(academies.getTimesIncreased()>0){
+                academies.decrease();
             }
         }
     }
 
-    public void generateIncome(Economy e){
-        
+    public void monthTick(Economy e){
+        energy.setTimesIncreased(0);
+        mining.setTimesIncreased(0);
+        industries.setTimesIncreased(0);
+        academies.setTimesIncreased(0);
+
+        e.setDmoney(energy.getLevel()*80);
+        e.setDminerals(mining.getLevel()*110);
+        e.setDalloy(industries.getLevel()*50);
+        e.setDscience(academies.getLevel()*10);
     }
     
 }

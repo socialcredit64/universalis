@@ -58,6 +58,7 @@ public class Economy {
 		alloy+=dalloy;
 		authority+=dauthority;
 		science+=dscience;
+		
 	}	
 
 	public void repairShip(Character p){
@@ -75,6 +76,14 @@ public class Economy {
 		g2d.drawString(""+dresource, x, y);
 
 		
+	}
+
+	public void addValue(){
+		money+=100000;
+		minerals+=100000;
+		alloy+=100000;
+		authority+=1000;
+		science+=100000;
 	}
 
 	

@@ -398,6 +398,10 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		if(enemies.element().gethp()<=0){
 			enemies.remove();
+			display="economy";
+			//add new enemy on one emeny death
+			enemies.add(Pirate(1260,400,1250,new ArrayList<Weapon>()));
+
 			if(enemies.isEmpty()){
 				display="economy";
 			}
@@ -472,6 +476,16 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		planets.get(planet).drawPlanet(g2d);
 		
 
+		//other buttons
+		g2d.setColor(Color.CYAN);
+		g2d.fillRect(1440,940,70,40);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("Fight",1440,970);
+
+		g2d.setColor(Color.CYAN);
+		g2d.fillRect(433,940,180,40);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("Repair Ship",440,970);
 	}
 
 
@@ -510,6 +524,11 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				enemies.remove();
 				enemies.element().setMaxHP();
 				enemies.element().setStartHP();
+			}
+		}
+		if(display=="economy"){
+			if(key==80){
+				economy.addValue();
 			}
 		}
 		
@@ -609,6 +628,39 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			if(x<900+30&&x>900&&y<173+30&&y>173){
 				planets.get(planet).cancelImprove("energy",economy);
 			}
+			if(x<900+30&&x>900&&y<173+30+40&&y>173){
+				planets.get(planet).cancelImprove("mining",economy);
+			}
+			if(x<900+30&&x>900&&y<173+30+80&&y>173){
+				planets.get(planet).cancelImprove("industries",economy);
+			}
+			if(x<900+30&&x>900&&y<173+30+120&&y>173){
+				planets.get(planet).cancelImprove("academies",economy);
+			}
+
+			if(x<1160+30&&x>1160&&y<173+30&&y>173){
+				planets.get(planet).improve("energy",economy);
+			}
+			if(x<1160+30&&x>1160&&y<173+30+40&&y>173){
+				planets.get(planet).improve("mining",economy);
+			}
+			if(x<1160+30&&x>1160&&y<173+30+80&&y>173){
+				planets.get(planet).improve("industries",economy);
+			}
+			if(x<1160+30&&x>1160&&y<173+30+120&&y>173){
+				planets.get(planet).improve("academies",economy);
+			}
+
+			//fight button
+			if(x<1440+365&&x>1440&&y<940+65&&y>940){
+				//add new enemies
+				enemies.add(new Pirate(1260,400,1250,new ArrayList<Weapon>()));
+				display="combat";
+			}
+
+
+
+
 			
 
 		}

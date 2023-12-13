@@ -24,6 +24,17 @@ public class District {
         efficiency = 1;
     }
 
+    public void increase(){
+        ++level;
+        ++timesIncreased;
+    }
+
+    public void decrease(){
+        --level;
+        --timesIncreased;
+    }
+
+
     
 
 
