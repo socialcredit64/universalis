@@ -210,6 +210,7 @@ public class Character {
 
 	public void setMaxHP(){
 		maxHP=baseHP+armor;
+		
 	}
 
 	public void setStartHP(){
@@ -229,5 +230,10 @@ public class Character {
 
 	public void hit(int x){
 		hp-=x;
+	}
+
+	public void setSwarmHP(){
+		maxHP*=0.9;
+		hp*=0.9;
 	}
 }

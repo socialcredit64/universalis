@@ -54,6 +54,7 @@ public class Economy {
 
 	public void monthTick(){
 		money+=dmoney;
+
 		minerals+=dminerals;
 		alloy+=dalloy;
 		authority+=dauthority;
@@ -63,10 +64,36 @@ public class Economy {
 
 	public void repairShip(Character p){
 		repaircost = Math.round(p.getmaxHP()-p.gethp());
+		if(faction=="Blorg"){
+			repaircost*=1.25;
+		}
 		alloy-=repaircost;
+		p.setStartHP();
+	}
+
+	public int getRepairInfo(Character p){
+		repaircost = Math.round(p.getmaxHP()-p.gethp())*2;
+		if(faction=="Blorg"){
+			repaircost*=1.25;
+		}
+		return repaircost;
 	}
 
 	public void drawResourceChange(Graphics g2d, int dresource, int x, int y){
+		if(faction=="UNE" && dresource==dmoney){
+			dresource*=1.25;
+		}
+		if(faction=="UNE" && dresource==dmoney){
+			dresource*=1.25;
+		}
+		if(faction=="Blorg" && dresource==dminerals){
+			dresource*=1.25;
+		}
+		if(faction=="Eliminators"&& dresource==dmoney){
+			dresource*=0.9;
+		}
+
+
 		if (dresource>0){
 			g2d.setColor(Color.green);
 		}
@@ -87,6 +114,7 @@ public class Economy {
 	}
 
 	
+
 	public int getMoney() {
 		return this.money;
 	}

@@ -104,15 +104,19 @@ public class Planet {
     public void improve(String district, Economy e){
         if (district == "energy"){
            energy.increase();
+           e.setDmoney(e.getDmoney()+70);
         }
         if (district == "mining"){
             mining.increase();
+            e.setDminerals(e.getDminerals()+100);
         }
         if (district == "industries"){
             industries.increase();
+            e.setDalloy(e.getDalloy()+50);
         }
         if (district == "academies"){
             academies.increase();
+            e.setDscience(e.getDscience()+20);
         }
 
     }

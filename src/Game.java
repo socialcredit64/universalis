@@ -83,6 +83,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		playership.defaultEquip();
 		playership.setMaxHP();
 		playership.setStartHP();
+		if(playership.getFac()=="Swarm"){
+			playership.setSwarmHP();
+		}
 		//playership.defaultEquip();
 		
 		winscreen = new ImageIcon("winscreen.png");
@@ -252,9 +255,17 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		
 		case "lose":
 			drawLoseScreen(g2d);
+		case "repair":
+			drawRepairScreen(g2d);
 		}
 		
 		
+	}
+
+	public void drawRepairScreen(Graphics g2d){
+		g2d.drawString("Your ship's HP: "+playership.gethp()+"/"+playership.getmaxHP(),300,300);
+		g2d.drawString("Cost:"+economy.getRepairInfo(playership),300,500);
+		g2d.drawString("Press G to repair",500,600);
 	}
 	
 	/*"Weapon Type: Energy\n"
@@ -293,9 +304,29 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		g2d.drawString("Faction Modifiers", 1080, 60);
 		if(order==0){
 				g2d.setColor(Color.GREEN);
-				g2d.drawString("Monthly Cash +15%", 1080,80);
-
+				g2d.drawString("Monthly Cash +25%", 1080,80);
+				g2d.setColor(Color.RED);
+				g2d.drawString("Authority Decrease +25%", 1080,100);
 		}
+		if(order==1){
+			g2d.setColor(Color.GREEN);
+			g2d.drawString("Ship Attack Speed +50%", 1080,80);
+			g2d.setColor(Color.RED);
+			g2d.drawString("Ship Hitpoints -10%", 1080,100);
+		}
+		if(order==2){
+			g2d.setColor(Color.GREEN);
+			g2d.drawString("Technology Cost -20%", 1080,80);
+			g2d.setColor(Color.RED);
+			g2d.drawString("Monthly Cash -10%", 1080,100);
+		}
+		if(order==3){
+			g2d.setColor(Color.GREEN);
+			g2d.drawString("Mineral Production Boost +25%", 1080,80);
+			g2d.setColor(Color.RED);
+			g2d.drawString("Ship Repair Cost +15%", 1080,100);
+		}
+
 
 	}
 
@@ -331,8 +362,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				}
 			}
 		if(playership.getFac()=="Swarm") {
+			
 			g2d.setColor(Color.DARK_GRAY);
-			if (counter%100==0) {
+			if (counter%50==0) {
 				swarmbullet.add(new Projectile());
 			}
 			for (Projectile p: swarmbullet){
@@ -399,11 +431,12 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 		if(enemies.element().gethp()<=0){
 			enemies.remove();
 			display="economy";
+			economy.monthTick();
 			//add new enemy on one emeny death
-			enemies.add(Pirate(1260,400,1250,new ArrayList<Weapon>()));
+			enemies.add(new Pirate(1260,400,1250,new ArrayList<Weapon>()));
 
 			if(enemies.isEmpty()){
-				display="economy";
+				display="win";
 			}
 
 			if(enemies.isEmpty()==false){
@@ -411,9 +444,9 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				enemies.element().setStartHP();
 			}
 		}
-
+		//i forgot which one executes
 		if(enemies.isEmpty()){
-			display="economy";
+			display="win";
 		}
 		if(playership.gethp()<=0){
 			display="lose";
@@ -531,7 +564,12 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 				economy.addValue();
 			}
 		}
-		
+		if(display=="repair"){
+			if(key==71){
+				economy.repairShip(playership);
+				display="economy";
+			}
+		}
 	
 	}
 
@@ -654,10 +692,14 @@ public class Game  extends JPanel implements Runnable, KeyListener, MouseListene
 			//fight button
 			if(x<1440+365&&x>1440&&y<940+65&&y>940){
 				//add new enemies
-				enemies.add(new Pirate(1260,400,1250,new ArrayList<Weapon>()));
+				enemies.add(new Cultist(1260,400,1250,new ArrayList<Weapon>()));
 				display="combat";
 			}
 
+			//repair
+			if(x<433+180&&x>433&&y<940+40&&y>940){
+				display="repair";
+			}
 
 
 
